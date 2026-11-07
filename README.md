@@ -21,3 +21,33 @@
 # Não mude os nomes das colunas. O código depende deles.
 # Mantenha o formato das datas (mês/dia/ano, como 5/3/2018 = 3 de maio).
 # Se o Excel em português exportar com ponto e vírgula e datas dia/mês/ano, ajuste no config.py:
+
+### Como rodar (Windows / PowerShell)
+# Abra o terminal na pasta do projeto (no VS Code: Ctrl + ').
+# Crie o ambiente virtual (só na primeira vez):
+# powershell
+   # python -m venv .venv
+# Ative o ambiente virtual:
+# powershell
+   # .venv\Scripts\activate
+
+# Deve aparecer (.venv) no começo da linha.
+
+# Instale as bibliotecas (só na primeira vez):
+# powershell
+   # pip install -r requirements.txt
+# Rode o ETL (cria e preenche o banco):
+# powershell
+   # python etl.py
+# Deve aparecer algo como:
+
+   # [Extract] 136 linhas e 17 colunas lidas.
+   # [Transform] 136 linhas após a limpeza.
+   # [Load] 136 linhas enviadas; 136 linhas na tabela 'ferias'.
+# Abra o dashboard:
+# powershell
+   # streamlit run dashboard.py
+
+# O navegador abre em http://localhost:8501.
+
+# Para encerrar: Ctrl + C no terminal. Para sair do ambiente virtual: deactivate.
