@@ -18,6 +18,19 @@ COLUNAS_DATA = [
     "proximo_limite_de_gozo",
 ]
 
+FORMATOS_DATA = ["%m/%d/%Y", "%d/%m/%Y", "%Y-%m-%d", "%d-%m-%Y", "%Y-%m-%d %H:%M:%S"]
+
+
+def converter_data(serie: pd.Series) -> pd.Series:
+    """Testa vários formatos e fica com o que converte mais datas."""
+    melhor, melhor_ok = None, -1
+    for fmt in FORMATOS_DATA:
+        conv = pd.to_datetime(serie, format=fmt, errors="coerce")
+        ok = int(conv.notna().sum())
+        if ok > melhor_ok:
+            melhor, melhor_ok = conv, ok
+    return melhor
+
 COLUNAS_NUM = ["dias_gozados","abono_dias","saldo_de_ferias"]
 
 def normalizar_nome(nome: str) -> str:
@@ -46,15 +59,14 @@ def transform(df: pd.DataFrame) -> pd.DataFrame:
     df = df.dropna(how="all").drop_duplicates().copy()
  
     # texto: tira espaços sobrando (ex.: "ROGERIO OLLERMANN  MOSCARDINE" com 2 espaços)
-    for col in df.columns:
-        if col in COLUNAS_DATA or col in COLUNAS_NUM:
+    for col in COLUNAS_DATA:
+        if col not in df.columns:
             continue
-        if df[col].dtype == "object" or pd.api.types.is_string_dtype(df[col]):
-            df[col] = (
-                df[col].astype("string").str.replace(r"\s+", " ", regex=True).str.strip()
-            )
-            df[col] = df[col].replace("", pd.NA)
- 
+        original = df[col].astype("string").str.strip()
+        df[col] = converter_data(original)
+        invalidas = int((original.notna() & df[col].isna()).sum())
+        if invalidas:
+            print(f"[Aviso] {invalidas} data(s) inválida(s) em '{col}' viraram vazio.")
     if "status" in df.columns:
         df["status"] = df["status"].str.upper()
  
