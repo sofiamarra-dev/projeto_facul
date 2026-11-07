@@ -29,7 +29,7 @@
    ## python -m venv .venv
  ## Ative o ambiente virtual:
  ## powershell
-    ## .venv\Scripts\activate
+     .venv\Scripts\activate
 
  ##  Deve aparecer (.venv) no começo da linha.
 
@@ -38,15 +38,15 @@
    ##  pip install -r requirements.txt
  ## Rode o ETL (cria e preenche o banco):
  ## powershell
-    ## python etl.py
+     python etl.py
  ## Deve aparecer algo como:
 
-    ## [Extract] 136 linhas e 17 colunas lidas.
-    ## [Transform] 136 linhas após a limpeza.
-    ## [Load] 136 linhas enviadas; 136 linhas na tabela 'ferias'.
+     [Extract] 136 linhas e 17 colunas lidas.
+     [Transform] 136 linhas após a limpeza.
+     [Load] 136 linhas enviadas; 136 linhas na tabela 'ferias'.
  ## Abra o dashboard:
  ## powershell
-    ## -streamlit run dashboard.py
+     streamlit run dashboard.py
 
  ## O navegador abre em http://localhost:8501.
 
